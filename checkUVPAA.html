@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="checkUVPAA()">Check UVPAA</button>
+  <p id="result"></p>
+
+  <script>
+    async function checkUVPAA() {
+      try {
+        const available =
+          await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+        document.getElementById("result").textContent =
+          "isUVPAA: " + available;
+      } catch (e) {
+        document.getElementById("result").textContent =
+          "Error: " + e;
+      }
+    }
+  </script>
+</body>
+</html>
