@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 <body>
-  <button onclick="checkUVPAA()">Check UVPAA</button>
+  <h2>UVPAAチェック</h2>
+  <button onclick="check()">チェック</button>
   <p id="result"></p>
 
   <script>
-    async function checkUVPAA() {
+    async function check() {
       try {
-        const available =
+        const result =
           await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-        document.getElementById("result").textContent =
-          "isUVPAA: " + available;
+        document.getElementById("result").textContent = result;
       } catch (e) {
-        document.getElementById("result").textContent =
-          "Error: " + e;
+        document.getElementById("result").textContent = "Error: " + e;
       }
     }
   </script>
