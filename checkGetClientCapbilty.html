@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <h2>Client Capabilitiesチェック</h2>
+  <button onclick="check()">チェック</button>
+  <pre id="result"></pre>
+
+  <script>
+    async function check() {
+      const output = document.getElementById("result");
+
+      try {
+        // API存在チェック
+        if (!window.PublicKeyCredential) {
+          output.textContent = "PublicKeyCredential が未対応です";
+          return;
+        }
+
+        if (!PublicKeyCredential.getClientCapabilities) {
+          output.textContent = "getClientCapabilities が未対応ブラウザです";
+          return;
+        }
+
+        const result = await PublicKeyCredential.getClientCapabilities();
+
+        // 見やすく整形
+        output.textContent = JSON.stringify(result, null, 2);
+
+      } catch (e) {
+        output.textContent = "Error: " + e;
+      }
+    }
+  </script>
+</body>
+</html>
