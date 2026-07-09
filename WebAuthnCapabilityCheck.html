@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebAuthn Capability Check</title>
+</head>
+<body>
+  <h2>WebAuthn Capability Check</h2>
+
+  <button onclick="check()">チェック</button>
+
+  <pre id="result"></pre>
+
+  <script>
+    async function check() {
+      const output = document.getElementById("result");
+
+      try {
+        if (!window.PublicKeyCredential) {
+          output.textContent = "PublicKeyCredential 未対応";
+          return;
+        }
+
+        const result = {};
+
+        // UVPAA
+        if (typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable === "function") {
+          result.uvpaa =
+            await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+        } else {
+          result.uvpaa = "Not Supported";
+        }
+
+        // CMA
+        if (typeof PublicKeyCredential.isConditionalMediationAvailable === "function") {
+          result.cma =
+            await PublicKeyCredential.isConditionalMediationAvailable();
+        } else {
+          result.cma = "Not Supported";
+        }
+
+        // Client Capabilities
+        if (typeof PublicKeyCredential.getClientCapabilities === "function") {
+          result.clientCapabilities =
+            await PublicKeyCredential.getClientCapabilities();
+        } else {
+          result.clientCapabilities = "Not Supported";
+        }
+
+        output.textContent = JSON.stringify(result, null, 2);
+
+      } catch (e) {
+        output.textContent = "Error: " + e;
+      }
+    }
+  </script>
+</body>
+</html>
