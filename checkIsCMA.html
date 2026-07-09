@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>isCMAチェック</title>
+</head>
+<body>
+  <h2>isConditionalMediationAvailable() チェック</h2>
+
+  <button onclick="check()">チェック</button>
+
+  <pre id="result"></pre>
+
+  <script>
+    async function check() {
+      const result = document.getElementById("result");
+
+      try {
+        if (!window.PublicKeyCredential) {
+          result.textContent = "PublicKeyCredential 未対応";
+          return;
+        }
+
+        if (
+          typeof PublicKeyCredential.isConditionalMediationAvailable !==
+          "function"
+        ) {
+          result.textContent =
+            "isConditionalMediationAvailable 未対応";
+          return;
+        }
+
+        const available =
+          await PublicKeyCredential.isConditionalMediationAvailable();
+
+        result.textContent =
+          "isConditionalMediationAvailable: " + available;
+      } catch (e) {
+        result.textContent = "Error: " + e;
+      }
+    }
+  </script>
+</body>
+</html>
